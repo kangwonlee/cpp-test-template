@@ -2,4 +2,5 @@
 pytest>=8.3
 pytest-json-report
 pytest-xdist
+requests==2.32.4
 # end requirements.txt
