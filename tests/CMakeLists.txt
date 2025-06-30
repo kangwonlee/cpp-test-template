@@ -1,18 +1,11 @@
 # begin tests/CMakeLists.txt
-
 cmake_minimum_required(VERSION 3.10)
 project(TestProject C)
 
-# Default student code directory (can be overridden with -DSTUDENT_DIR)
+# Default student code directory
 set(STUDENT_DIR /app/workspace CACHE PATH "Path to student's code directory")
 
-# Build the shared library from student's code
-add_library(pointers SHARED ${STUDENT_DIR}/src/exercise.c)
-target_include_directories(pointers PUBLIC ${STUDENT_DIR}/include)
-
-# Build the test executable
-add_executable(my_tests test_dynamic.c)
-target_link_libraries(my_tests pointers)
-target_include_directories(my_tests PRIVATE ${STUDENT_DIR}/include)
-
+# Build the main executable
+add_executable(hello ${STUDENT_DIR}/src/main.c)
+target_include_directories(hello PRIVATE ${STUDENT_DIR}/include)
 # end tests/CMakeLists.txt
