@@ -1,11 +1,11 @@
-// begin test/test_pointers.c
+// begin test/test_dynamic.c
 
 #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "pointers.h"
+#include "exercise.h"
 
 
 // Test that allocate_integer() returns a valid pointer.
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
         failed_tests += test_allocate_integer_correct_size();
         failed_tests += test_allocate_integer_set_value();
         failed_tests += test_deallocate_integer_frees_memory();
-        
+
         if (failed_tests > 0) {
             fprintf(stderr, "%d tests failed\n", failed_tests);
             return failed_tests;
@@ -86,4 +86,4 @@ int main(int argc, char **argv) {
     }
 }
 
-// end test/test_pointers.c
+// end test/test_dynamic.c

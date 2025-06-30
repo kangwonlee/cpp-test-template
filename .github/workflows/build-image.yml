@@ -1,7 +1,12 @@
-# begin build.yml
+# begin build-image.yml
 name: Build Grader Image
 on:
   push:
+    paths:
+      - 'tests/**'
+      - Dockerfile
+      - requirements.txt
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
@@ -46,4 +51,4 @@ jobs:
           secrets: |
             "GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}"
 
-# end build.yml
+# end build-image.yml
