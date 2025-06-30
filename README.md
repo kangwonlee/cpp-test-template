@@ -1,10 +1,10 @@
-# python-pytest-template
+# cpp-pytest-template
 
-Template for grader image builders for python assignments
+Template for grader image builders for c/c++ assignments
 
 ## Purpose
 
-* To provide a template for creating a grader image for python assignments
+* To provide a template for creating a grader image for c/c++ assignments
 * To automate the programming assignment grading process so that educators can focus more on teaching
 
 ## Setup & Customization
@@ -33,3 +33,8 @@ Template for grader image builders for python assignments
 ## Notes
 
 - This template is registered as a part of #C-2025-016393 in the Korea Copyright Commission.
+- Various LLMs and AI tools helped implemeting the templates for this assignment.
+  - Google Gemini Flash / Pro 2.5
+  - xAI Grok3
+  - Perplexity Sonar
+  - Claude.ai 4.0 Sonnet
