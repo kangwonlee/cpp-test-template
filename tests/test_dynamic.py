@@ -21,14 +21,15 @@ def result(my_test_folder:pathlib.Path, exec_name:str="my_exec") -> subprocess.C
     return r
 
 
-def test_hello_world_output(
-    result:subprocess.CompletedProcess
+def test_expected_output(
+    result:subprocess.CompletedProcess,
+    expected_stdout:str="Hello World\n",
 ) -> None:
     """
-    Test whether the program outputs 'Hello World' with a newline.
+    Test whether the program outputs the expected string.
     """
     assert result.returncode == 0, f"Program failed with return code {result.returncode}\nstderr: {result.stderr}"
-    assert result.stdout == "Hello World\n", f"Expected 'Hello World\\n', got '{result.stdout}'"
+    assert result.stdout == expected_stdout, f"Expected {expected_stdout!r}, got '{result.stdout!r}'"
 
 
 if __name__ == "__main__":
