@@ -7,12 +7,12 @@ project(TestProject C)
 set(STUDENT_DIR /app/workspace CACHE PATH "Path to student's code directory")
 
 # Build the shared library from student's code
-add_library(pointers SHARED ${STUDENT_DIR}/src/exercise.c)
-target_include_directories(pointers PUBLIC ${STUDENT_DIR}/include)
+add_library(my_lib SHARED ${STUDENT_DIR}/src/exercise.c)
+target_include_directories(my_lib PUBLIC ${STUDENT_DIR}/include)
 
 # Build the test executable
 add_executable(my_tests test_dynamic.c)
-target_link_libraries(my_tests pointers)
+target_link_libraries(my_tests my_lib)
 target_include_directories(my_tests PRIVATE ${STUDENT_DIR}/include)
 
 # end tests/CMakeLists.txt
