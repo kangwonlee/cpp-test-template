@@ -59,7 +59,7 @@ def obj_file_path(src_file_path:pathlib.Path, tmp_path_factory:pytest.TempPathFa
     return (tmp_path / src_file_path.name).with_suffix(".o")
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def proj_folder(my_test_folder:pathlib.Path) -> pathlib.Path:
     p = pathlib.Path(
         os.getenv(
