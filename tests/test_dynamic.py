@@ -9,7 +9,7 @@ import pytest
 def test_hello_world_output(proj_folder: pathlib.Path):
     """Test that the program outputs 'Hello World' with a newline."""
     result = subprocess.run(
-        [str(proj_folder / "tests" / "hello")],
+        [str(proj_folder / "tests" / "my_exec")],
         capture_output=True,
         text=True,
     )
