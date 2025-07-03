@@ -7,9 +7,9 @@ import pytest
 
 
 @pytest.fixture(scope="module")
-def result(proj_folder:pathlib.Path, exec_name:str="my_exec") -> subprocess.CompletedProcess:
+def result(my_test_folder:pathlib.Path, exec_name:str="my_exec") -> subprocess.CompletedProcess:
     return subprocess.run(
-        [str(proj_folder / "tests" / exec_name)],
+        [str(my_test_folder / exec_name)],
         capture_output=True,
         text=True,
     )
