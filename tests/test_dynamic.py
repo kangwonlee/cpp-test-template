@@ -8,11 +8,17 @@ import pytest
 
 @pytest.fixture(scope="module")
 def result(my_test_folder:pathlib.Path, exec_name:str="my_exec") -> subprocess.CompletedProcess:
-    return subprocess.run(
-        [str(my_test_folder / exec_name)],
-        capture_output=True,
-        text=True,
-    )
+    try:
+        r = subprocess.run(
+            [str(my_test_folder / exec_name)],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except subprocess.TimeoutExpired as e:
+        pytest.fail(f"Execution timed out: {e}")
+
+    return r
 
 
 def test_hello_world_output(
