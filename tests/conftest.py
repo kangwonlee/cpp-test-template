@@ -35,7 +35,7 @@ def my_src_folder(my_test_folder:pathlib.Path) -> pathlib.Path:
     assert p.is_dir()
 
     # Ensure the folder contains C source files
-    if not tuple(p.glob('**/*.c')):
+    if not (tuple(p.glob('**/*.c')) or tuple(p.glob('**/*.cpp'))):
         raise FileNotFoundError(
             f"No C source files found in {p}\n"
             f"p.glob('*') starts with : {list(p.glob('*'))[:5]}\n"
