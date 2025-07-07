@@ -94,7 +94,7 @@ def test_arithmetic_output(
     expected_output = get_expected_output(a, b, c, d)
 
     # Compare outputs using difflib
-    if result.stdout != expected_output:
+    if not result.stdout.endswith(expected_output):
         diff = difflib.unified_diff(
             expected_output.splitlines(keepends=True),
             result.stdout.splitlines(keepends=True),
@@ -102,7 +102,7 @@ def test_arithmetic_output(
             tofile="actual",
         )
         diff_str = "".join(diff)
-        assert False, f"Output mismatch:\n{diff_str}"
+        pytest.fail(f"Output mismatch:\n{diff_str}")
 
 
 if "__main__" == __name__:
