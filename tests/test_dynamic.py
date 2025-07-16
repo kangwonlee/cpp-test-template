@@ -113,19 +113,24 @@ def test_mul_int(lib, a:int, b:int, expected_a_b:Tuple[int]):
     assert lib.mul_int(a, b) == expected_a_b[2]
 
 
-def test_add_float(lib, c:float, d:float, expected_c_d:Tuple[float]):
-    assert math.isclose(lib.add_float(1.5, 2.5), 4.0)
-    assert math.isclose(lib.add_float(c, d), expected_c_d[0])
+@pytest.fixture
+def rel_tol() -> float:
+    return 1e-6
 
 
-def test_sub_float(lib, c:float, d:float, expected_c_d:Tuple[float]):
-    assert math.isclose(lib.sub_float(1.5, 2.5), -1.0)
-    assert math.isclose(lib.sub_float(c, d), expected_c_d[1])
+def test_add_float(lib, c:float, d:float, expected_c_d:Tuple[float], rel_tol:float):
+    assert math.isclose(lib.add_float(1.5, 2.5), 4.0, rel_tol=rel_tol)
+    assert math.isclose(lib.add_float(c, d), expected_c_d[0], rel_tol=rel_tol)
 
 
-def test_mul_float(lib, c:float, d:float, expected_c_d:Tuple[float]):
-    assert math.isclose(lib.mul_float(1.5, 2.5), 3.75)
-    assert math.isclose(lib.mul_float(c, d), expected_c_d[2])
+def test_sub_float(lib, c:float, d:float, expected_c_d:Tuple[float], rel_tol:float):
+    assert math.isclose(lib.sub_float(1.5, 2.5), -1.0, rel_tol=rel_tol)
+    assert math.isclose(lib.sub_float(c, d), expected_c_d[1], rel_tol=rel_tol)
+
+
+def test_mul_float(lib, c:float, d:float, expected_c_d:Tuple[float], rel_tol:float):
+    assert math.isclose(lib.mul_float(1.5, 2.5), 3.75, rel_tol=rel_tol)
+    assert math.isclose(lib.mul_float(c, d), expected_c_d[2], rel_tol=rel_tol)
 
 
 if __name__ == "__main__":
