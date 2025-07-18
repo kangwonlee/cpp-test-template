@@ -66,7 +66,7 @@ def expected_c_d(c:float, d:float) -> Tuple[float]:
 @pytest.fixture(scope="module")
 def lib_path(my_test_folder:pathlib.Path) -> pathlib.Path:
     # Get the path to the shared library
-    result = my_test_folder / "libarithmetic.so"
+    result = my_test_folder / "libexercise.so"
 
     if not result.exists():
         pytest.fail(
