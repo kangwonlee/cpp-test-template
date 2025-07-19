@@ -1,6 +1,6 @@
 # begin Dockerfile
 
-FROM ghcr.io/kangwonlee/edu-base-cpp:4e0d6d8
+FROM ghcr.io/kangwonlee/edu-base-cpp:9208e69
 
 WORKDIR /tests/
 
