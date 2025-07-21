@@ -5,8 +5,14 @@ import os
 import pathlib
 import subprocess
 
+from typing import List
+
+
 import clang.cindex
 import pytest
+
+
+import pathman
 
 
 logging.basicConfig(level=logging.INFO)
@@ -137,8 +143,7 @@ def test_src_file_exists(src_file_path:pathlib.Path):
         pytest.fail(f"Source file not found: {src_file_path}")
 
 
-@pytest.fixture(scope="module")
-def tu(src_file_path:pathlib.Path) -> clang.cindex.TranslationUnit:
+def get_TranslationUnit(src_file_path:pathlib.Path) -> clang.cindex.TranslationUnit:
     """
     Parse the source file using libclang and return the translation unit.
     """
@@ -152,6 +157,21 @@ def tu(src_file_path:pathlib.Path) -> clang.cindex.TranslationUnit:
         pytest.fail(f"Parse errors in code:\n{error_msgs}. Ensure your code compiles and uses only allowed headers (stdio.h).")
 
     return tu
+
+
+@pytest.fixture(scope="module")
+def tu(src_file_path:pathlib.Path) -> clang.cindex.TranslationUnit:
+    return get_TranslationUnit(src_file_path)
+
+
+def function_names(
+    tu:clang.cindex.TranslationUnit=get_TranslationUnit(pathman.get_src_file_path()),
+) -> List[str]:
+    names = []
+    for c in tu.cursor.get_children():
+        if c.kind == clang.cindex.CursorKind.FUNCTION_DECL and c.spelling != 'main':
+            names.append(c.spelling)
+    return names
 
 
 @pytest.mark.parametrize("func_name", ['get_sign', 'get_water_state'])
