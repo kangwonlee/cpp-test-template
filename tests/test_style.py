@@ -169,12 +169,13 @@ def function_names(
 ) -> List[str]:
     names = []
     for c in tu.cursor.get_children():
-        if c.kind == clang.cindex.CursorKind.FUNCTION_DECL and c.spelling != 'main':
-            names.append(c.spelling)
+        if c.kind == clang.cindex.CursorKind.FUNCTION_DECL and c.spelling != 'main' and c.is_definition():
+            if c.location.file and c.location.file.name == tu.spelling:
+                names.append(c.spelling)
     return names
 
 
-@pytest.mark.parametrize("func_name", ['get_sign', 'get_water_state'])
+@pytest.mark.parametrize("func_name", function_names())
 def test_conditional_usage(
     src_file_path:pathlib.Path,
     func_name:str,
