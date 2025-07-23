@@ -27,7 +27,11 @@ Template for grader image builders for c/c++ assignments
 ## Dockerfile
 
 - Builds a lightweight grader image with `pytest`.
-- Installs dependencies from `requirements.txt`.
+- Currently `requirements.txt` is for documentation purpose only.
+  + If you want to install additional python packages:
+    + add them to `requirements.txt`,
+    + and uncomment the `COPY` and `RUN` lines in the `Dockerfile`.
+    + Please test whether `python` can import the packages you added.
 - Customize `CMD` to run your tests (e.g., `python3 -m pytest tests/`).
 
 ## Notes
