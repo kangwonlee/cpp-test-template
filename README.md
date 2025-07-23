@@ -32,7 +32,7 @@ Template for grader image builders for c/c++ assignments
 
 ## Notes
 
-- This template is registered as a part of #C-2025-016393 in the Korea Copyright Commission.
+- Copyright © 2025 Kangwon Lee. Registered at the Korea Copyright Commission under #C-2025-027967 (as one of derivative works from original registration #C-2025-016393).
 - Various LLMs and AI tools helped implemeting the templates for this assignment.
   - Google Gemini Flash / Pro 2.5
   - xAI Grok3
