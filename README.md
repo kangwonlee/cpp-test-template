@@ -22,7 +22,7 @@ Template for grader image builders for c/c++ assignments
 
 - `build.yml`: Builds and pushes a multi-arch grader image to GHCR.
 - Uses GHCR for privacy and GitHub integration—swap to Docker Hub by updating `registry` and `tags` if preferred.
-- Requires `Dockerfile` in repo root (see [Dockerfile docs](#)). Set `BUILDER_PAT` in secrets for optional dispatch.
+- Requires `Dockerfile` in repo root.
 
 ## Dockerfile
 
