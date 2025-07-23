@@ -174,7 +174,7 @@ def function_names(
     return names
 
 
-@pytest.mark.parametrize("func_name", ['get_sign', 'get_water_state'])
+@pytest.mark.parametrize("func_name", function_names())
 def test_conditional_usage(
     src_file_path:pathlib.Path,
     func_name:str,
