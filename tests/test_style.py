@@ -169,7 +169,7 @@ def function_names(
 ) -> List[str]:
     names = []
     for c in tu.cursor.get_children():
-        if c.kind == clang.cindex.CursorKind.FUNCTION_DECL and c.spelling != 'main':
+        if c.kind == clang.cindex.CursorKind.FUNCTION_DECL and c.spelling != 'main' and c.is_definition():
             if c.location.file and c.location.file.name == tu.spelling:
                 names.append(c.spelling)
     return names
