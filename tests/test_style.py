@@ -108,8 +108,10 @@ def test_clang_format(src_file_path:pathlib.Path):
 class CKeywordChecker:
     def __init__(self, func_name):
         self.func_name = func_name
-        self.has_if = False
-        self.disallowed = []  # List of (construct, line) tuples
+        self.has_if = []
+        self.has_for = []
+        self.has_while = []
+        self.has_ternary = []
 
     def check(self, cursor):
         logging.info(f"Starting to check function: {self.func_name}")
@@ -121,16 +123,16 @@ class CKeywordChecker:
                     logging.info(f"child.kind: {child.kind}")
                     if child.kind == clang.cindex.CursorKind.IF_STMT:
                         logging.info(f"found if statement in {self.func_name} at line {child.location.line}")
-                        self.has_if = True
+                        self.has_if.append(('if', child.location.line))
                     elif child.kind == clang.cindex.CursorKind.FOR_STMT:
                         logging.info(f"found for statement in {self.func_name} at line {child.location.line}")
-                        self.disallowed.append(('for', child.location.line))
+                        self.has_for.append(('for', child.location.line))
                     elif child.kind == clang.cindex.CursorKind.WHILE_STMT:
                         logging.info(f"found while statement in {self.func_name} at line {child.location.line}")
-                        self.disallowed.append(('while', child.location.line))
+                        self.has_while.append(('while', child.location.line))
                     elif child.kind == clang.cindex.CursorKind.CONDITIONAL_OPERATOR:
                         logging.info(f"found conditional operator statement in {self.func_name} at line {child.location.line}")
-                        self.disallowed.append(('ternary operator (?:)', child.location.line))
+                        self.has_ternary.append(('ternary operator (?:)', child.location.line))
 
         logging.info(f"Finished checking function: {self.func_name}")
 
@@ -182,7 +184,7 @@ def test_conditional_usage(
     tu:clang.cindex.TranslationUnit
 ):
     """
-    Test that get_sign and get_water_state use if/else and do not use for, while, or ternary operators.
+    Test that conditional functions use if/else and do not use for, while, or ternary operators.
     """
 
     logging.info(f"Checking function {func_name} of source file: {src_file_path}")
@@ -197,14 +199,47 @@ def test_conditional_usage(
         "No if statements found."
     )
 
-    # Check for disallowed constructs
-    if checker.disallowed:
-        feedback = (
-            f"Function {func_name} contains disallowed constructs:\n" +
-            '\n'.join([f"- {construct} at line {line}" for construct, line in checker.disallowed]) +
-            "\nUse if/else statements instead of loops or ternary operators."
+
+@pytest.mark.parametrize("func_name", function_names())
+def test_loop_usage(
+    src_file_path:pathlib.Path,
+    func_name:str,
+    tu:clang.cindex.TranslationUnit
+):
+    """
+    Test that conditional functions use if/else and do not use for, while, or ternary operators.
+    """
+
+    logging.info(f"Checking function {func_name} of source file: {src_file_path}")
+    keyword = func_name.split('_')[-1]  # Extract the keyword from the function name
+
+    if keyword not in ['for', 'while']:
+        pytest.skip(
+            f"Function name {func_name} does not end with `for` or `while`.\n"
+            "Invalid function name."
         )
-        assert not checker.disallowed, feedback
+
+    # Check each function
+    checker = CKeywordChecker(func_name)
+
+    attributes = {
+        "for": checker.has_for,
+        "while": checker.has_while,
+    }
+
+    if attributes[keyword]:
+        pytest.fail(
+            f"Function {func_name} : attribute for {keyword} must be empty before checking."
+        )
+
+    checker.check(tu.cursor)
+
+    # Check for required keyword statements
+    if not attributes[keyword]:
+        pytest.fail(
+            f"Function {func_name} must use {keyword} statements as per assignment instructions.\n"
+            f"No {keyword} statements found."
+        )
 
 
 # Run tests if invoked directly
