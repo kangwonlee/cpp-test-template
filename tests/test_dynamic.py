@@ -1,6 +1,7 @@
 # begin test/test_dynamic.py
 import ctypes
 import math
+import multiprocessing
 import pathlib
 import random
 
@@ -98,9 +99,36 @@ def lib(lib_path:pathlib.Path):
     return lib
 
 
+def call_with_timeout(lib:ctypes.CDLL, func_name:str, *args, timeout:int=10):
+    """
+    Call a function from the shared library with a timeout.
+    """
+    def target(result, exc_info):
+        try:
+            result.value = getattr(lib, func_name)(*args)
+        except Exception as e:
+            exc_info.value = str(e)
+
+    manager = multiprocessing.Manager()
+    result = manager.Value('i', -999999)  # Sentinel for failure
+    exc_info = manager.Value('c', '')  # For exceptions
+    p = multiprocessing.Process(target=target, args=(result, exc_info))
+    p.start()
+    p.join(timeout)
+    if p.is_alive():
+        p.terminate()
+        p.join()
+        raise TimeoutError(f"Timeout: Likely infinite loop in {func_name}")
+    if exc_info.value:
+        raise RuntimeError(f"Exception in {func_name}: {exc_info.value}")
+    return result.value
+
+
 def test_add_int(lib, a:int, b:int, expected_a_b:Tuple[int]):
     assert lib.add_int(10, 5) == 15
+    assert call_with_timeout(lib, "add_int", 10, 5) == 15
     assert lib.add_int(a, b) == expected_a_b[0]
+    assert call_with_timeout(lib, "add_int", a, b) == expected_a_b[0]
 
 
 def test_sub_int(lib, a:int, b:int, expected_a_b:Tuple[int]):
