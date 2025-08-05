@@ -71,8 +71,16 @@ def lib_path(my_test_folder:pathlib.Path) -> pathlib.Path:
 
     if not result.exists():
         pytest.fail(
-            f"Shared library not found at {result}. "
-            "Ensure it is built correctly."
+            (
+                f"Shared library not found at {result}.\n"
+                "Ensure CMake builds it correctly.\n"
+            ) +
+            '\n'.join(
+                map(
+                    str,
+                    my_test_folder.glob('**/*.so')
+                )
+            )
         )
 
     return result
