@@ -20,7 +20,7 @@ def test_build(src_file_path: pathlib.Path, obj_file_path: pathlib.Path):
     """
     result = subprocess.run(
         [
-            "g++",
+            "clang++",
             "-c", str(src_file_path),
             '-o', str(obj_file_path),
         ],
