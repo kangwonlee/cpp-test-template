@@ -79,3 +79,6 @@ dmypy.json
 # Ignore image or PDF files, as they are unlikely to be part of the repository.
 *.png
 *.pdf
+
+# Visual Studio
+.vs/
