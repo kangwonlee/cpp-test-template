@@ -1,9 +1,10 @@
-# begin build-image.yml
+# begin .github/workflows/build-image.yml
 name: Build Grader Image
 on:
   push:
     paths:
       - 'tests/**'
+      - 'unit_tests/**'
       - Dockerfile
       - requirements.txt
       - '.github/**'
@@ -15,6 +16,22 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Create virtual environment
+        run: uv venv .venv --python 3.11
+
+      - name: Install dependencies
+        run: uv pip install -r requirements.txt
+
+      - name: Run unit tests
+        run: |
+          source .venv/bin/activate
+          pytest unit_tests/ -v --tb=short
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -51,4 +68,4 @@ jobs:
           secrets: |
             "GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}"
 
-# end build-image.yml
+# end .github/workflows/build-image.yml
