@@ -40,7 +40,7 @@ def my_src_folder(my_test_folder:pathlib.Path) -> pathlib.Path:
 def c_filename():
     return os.getenv(
         'C_FILENAME',
-        'exercise.c',
+        'main.c',
     )
 
 

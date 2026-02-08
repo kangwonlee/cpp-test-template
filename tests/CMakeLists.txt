@@ -7,7 +7,7 @@ project(TestProject C)
 set(STUDENT_DIR /app/workspace CACHE PATH "Path to student's code directory")
 
 # Build the shared library from student's code
-add_library(my_lib SHARED ${STUDENT_DIR}/src/exercise.c)
+add_library(my_lib SHARED ${STUDENT_DIR}/src/main.c)
 target_include_directories(my_lib PUBLIC ${STUDENT_DIR}/include)
 
 # Build the test executable

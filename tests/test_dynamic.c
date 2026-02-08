@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "exercise.h"
+#include "main.h"
 
 
 // Test that allocate_integer() returns a valid pointer.
